@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = require('../router/router');
-const AccountMiddleware = require('../middleware/AccountMiddleware');
+const AccountMiddleware = require('../middleware/userAlreadyExists');
 const app = express();
 const port = 3002;
 
