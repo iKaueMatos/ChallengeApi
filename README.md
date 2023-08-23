@@ -10,7 +10,7 @@
 
 ## 💻 Projeto
 
-ignite-template-conceitos-do-nodejs
+Chanllege
 
 ## 📝 Licença
 
@@ -21,9 +21,6 @@ Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 <p align="center">
   Feito com 💜 by Rocketseat
 </p>
-
-
-<!--START_SECTION:footer-->
 
 <br />
 <br />
