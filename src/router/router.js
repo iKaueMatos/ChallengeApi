@@ -1,13 +1,15 @@
 /* Middleware validation*/
-const userAlreadyExists = require('../middleware/userAlreadyExists');
 const todoValidation = require('../utils/todoValidation');
+const checksCreateTodosUserAvailability = require('../middleware/checksCreateTodosUserAvailability');
+const findUserById = require('../middleware/findUserById');
+const checksExistsUserAccount = require("../middleware/checksExistsUserAccount");
 
 const express = require('express');
 const { v4: uuidV4 } = require("uuid");
 const router = express.Router();
 const users = [];
 
-router.post('/users', userAlreadyExists, (request, response) => {
+router.post('/users', checksExistsUserAccount, (request, response) => {
   const {name, username} = request.body;
   const userAlreadyExistsValidation = users.some((user) => user.username === username);
   
@@ -19,6 +21,7 @@ router.post('/users', userAlreadyExists, (request, response) => {
       id: uuidV4(),
       name, 
       username, 
+      plan,
       todos: []
   }
 
@@ -26,13 +29,13 @@ router.post('/users', userAlreadyExists, (request, response) => {
   return response.status(201).json(user);
 });
 
-router.get('/todos', userAlreadyExists, (request, response) => {
+router.get('/todos', checksExistsUserAccount, (request, response) => {
   const { user } = request;
 
   return response.json(user.todos);
 });
 
-router.post('/todos', userAlreadyExists, (request, response) => {
+router.post('/todos', checksExistsUserAccount, (request, response) => {
   const { user } = request;
   const { title, deadline } = request.body;
 
@@ -48,7 +51,7 @@ router.post('/todos', userAlreadyExists, (request, response) => {
   return response.status(201).json(todo);
 });
 
-router.put('/todos/:id', userAlreadyExists, (request, response) => {
+router.put('/todos/:id', checksExistsUserAccount,checksCreateTodosUserAvailability, findUserById, (request, response) => {
   const {title, deadline } = request.body;
   const { user } = request;
   const { id } = request.params;
@@ -62,7 +65,7 @@ router.put('/todos/:id', userAlreadyExists, (request, response) => {
   return response.json(todo);
 });
 
-router.patch('/todos/:id/done', userAlreadyExists, (request, response) => {
+router.patch('/todos/:id/done', checksExistsUserAccount, checksCreateTodosUserAvailability, findUserById, (request, response) => {
   const { user } = request;
   const { id } = request.params;
 
@@ -73,7 +76,7 @@ router.patch('/todos/:id/done', userAlreadyExists, (request, response) => {
   return response.json(todo);
 });
 
-router.delete('/todos/:id', userAlreadyExists, (request, response) => {
+router.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { user } = request;
   const { id } = request.params;
 

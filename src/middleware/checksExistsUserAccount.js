@@ -1,5 +1,5 @@
-module.exports = function userAlreadyExists(request, response, next) {
-    const { username } = request.body;
+module.exports = function checksExistsUserAccount(request, response, next) {
+    const { username } = request.header;
     const userAlreadyExists = users.some((user) => user.username === username);
 
     if (userAlreadyExists) {
